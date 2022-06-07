@@ -5,10 +5,6 @@ Run basic tests:
 
 Run all trace tests:
 ./all_tests.sh
-Sample result with O3 flag in: all_O3.txt
 
 Check if trace file is valid:
 python tracechecker.py $(path to file)
-
-Run test for individual files:
-./mdriver -f $(path to file)
