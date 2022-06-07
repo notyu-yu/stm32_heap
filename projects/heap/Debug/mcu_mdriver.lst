@@ -1359,7 +1359,7 @@ int main(void)
 		end_time = get_time();
  8000b5e:	f001 fb23 	bl	80021a8 <get_time>
  8000b62:	901d      	str	r0, [sp, #116]	; 0x74
-		mm_stats.secs = (end_time-start_time)/100.0f;
+		mm_stats.secs = (end_time-start_time)/1000.0f;
  8000b64:	9a1d      	ldr	r2, [sp, #116]	; 0x74
  8000b66:	9b1e      	ldr	r3, [sp, #120]	; 0x78
  8000b68:	1ad3      	subs	r3, r2, r3
@@ -1549,7 +1549,7 @@ int main(void)
  8000cd8:	200000e8 	.word	0x200000e8
  8000cdc:	080045ec 	.word	0x080045ec
  8000ce0:	080045fc 	.word	0x080045fc
- 8000ce4:	42c80000 	.word	0x42c80000
+ 8000ce4:	447a0000 	.word	0x447a0000
  8000ce8:	08004610 	.word	0x08004610
  8000cec:	0800462c 	.word	0x0800462c
  8000cf0:	200000e4 	.word	0x200000e4

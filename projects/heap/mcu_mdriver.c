@@ -199,7 +199,7 @@ int main(void)
 		}
 	    //mm_stats.secs = fsecs(eval_mm_speed, &speed_params);
 		end_time = get_time();
-		mm_stats.secs = (end_time-start_time)/100.0f;
+		mm_stats.secs = (end_time-start_time)/1000.0f;
 	}
 	free_trace(trace);
 

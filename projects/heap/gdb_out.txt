@@ -29,7 +29,7 @@ Note: automatically using hardware breakpoints for read-only addresses.
 
 Breakpoint 1, loop () at mcu.c:4
 4		while(1) {}
-$1 = "Utilization: 89%. Throuput: 59\n", '\000' <repeats 2016 times>
+$1 = "Utilization: 89%. Throuput: 600\n", '\000' <repeats 2015 times>
 A debugging session is active.
 
 	Inferior 1 [Remote target] will be detached.
