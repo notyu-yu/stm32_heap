@@ -32,6 +32,7 @@
 #define MAXLINE     1024 /* max string size */
 #define HDRLINES       4 /* number of header lines in a trace file */
 #define LINENUM(i) (i+5) /* cnvt trace request nums to linenums (origin 1) */
+#define KB 1024
 
 /* Returns true if p is ALIGNMENT-byte aligned */
 #define IS_ALIGNED(p)  ((((unsigned int)(p)) % ALIGNMENT) == 0)
@@ -93,10 +94,6 @@ typedef struct {
  *******************/
 int verbose = 0;        /* global flag for verbose output */
 static int errors = 0;  /* number of errs found when running student malloc */
-char msg[MAXLINE];      /* for whenever we need to compose an error message */
-
-/* Directory where default tracefiles are found */
-static char tracedir[MAXLINE] = TRACEDIR;
 
 /* The filenames of the default tracefiles */
 /*
@@ -127,7 +124,6 @@ static void eval_mm_speed(void *ptr);
 
 /* Various helper routines */
 static void printresults(int n, stats_t *stats);
-static void usage(void);
 static void unix_error(char *msg);
 static void malloc_error(int tracenum, int opnum, char *msg);
 static void app_error(char *msg);
@@ -135,16 +131,18 @@ static void app_error(char *msg);
 // Test file string
 static char tracestr[] = TESTSTRING;
 
-// Output String
-static char output_str[MAXLINE*2] = {0};
-static size_t output_offset = 0;
+// Test for stack overflow
+static void stack_test(void) {
+	char buffer_array[10*KB] = {0};
+	stack_test();
+}
 
-// Append printed output to output_str
-static void var_print(char * str) {
-	if (output_offset + strlen(str) <= MAXLINE*2) {
-		strcat(output_str, str);
-	} else {
-		while(1){}
+// Test for stack overflow
+static void heap_test(void) {
+	while(1) {
+		if(!mm_malloc(10*KB)){
+			loop();
+		}
 	}
 }
 
@@ -166,7 +164,7 @@ int main(void)
     int autograder = 0;  /* If set, emit summary info for autograder (-g) */
 
     /* temporaries used to compute the performance index */
-    double util, avg_mm_util, p1, p2, perfindex, avg_mm_throughput, ops, secs;
+    double util, avg_mm_util, p1, p2, avg_mm_throughput, ops, secs;
     int numcorrect;
 
 	int p1_int;
@@ -245,7 +243,6 @@ int main(void)
 	var_print(msg);
     }
     else { /* There were errors */
-	perfindex = 0.0;
 	sprintf(msg, "Terminated with %d errors\n", errors);
 	var_print(msg);
     }
@@ -433,6 +430,12 @@ static trace_t *read_trace()
 			scanptr += bytes_scanned;
 			trace->ops[op_index].type = FREE;
 			trace->ops[op_index].index = index;
+			break;
+		case 's':
+			stack_test();
+			break;
+		case 'h':
+			heap_test();
 			break;
 		default:
 			sprintf(msg, "Bogus type character (%c) in string (%s) in tracefile %s\n", 
@@ -790,9 +793,9 @@ static void printresults(int n, stats_t *stats)
 /* 
  * app_error - Report an arbitrary application error
  */
-void app_error(char *msg) 
+void app_error(char * err_msg) 
 {
-    sprintf(msg, "%s\n", msg);
+    sprintf(msg, "%s\n", err_msg);
 	var_print(msg);
 	loop();
 }
@@ -800,9 +803,9 @@ void app_error(char *msg)
 /* 
  * unix_error - Report a Unix-style error
  */
-void unix_error(char *msg) 
+void unix_error(char * err_msg) 
 {
-    sprintf(msg, "%s: %s\n", msg, strerror(errno));
+    sprintf(msg, "%s: %s\n", err_msg, strerror(errno));
 	var_print(msg);
 	loop();
 }
@@ -815,21 +818,4 @@ void malloc_error(int tracenum, int opnum, char *err_msg)
     errors++;
     sprintf(msg, "ERROR [trace %d, line %d]: %s\n", tracenum, LINENUM(opnum), err_msg);
 	loop();
-}
-
-/* 
- * usage - Explain the command line arguments
- */
-static void usage(void) 
-{
-    fprintf(stderr, "Usage: mdriver [-hvVal] [-f <file>] [-t <dir>]\n");
-    fprintf(stderr, "Options\n");
-    fprintf(stderr, "\t-a         Don't check the team structure.\n");
-    fprintf(stderr, "\t-f <file>  Use <file> as the trace file.\n");
-    fprintf(stderr, "\t-g         Generate summary info for autograder.\n");
-    fprintf(stderr, "\t-h         Print this message.\n");
-    fprintf(stderr, "\t-l         Run libc malloc as well.\n");
-    fprintf(stderr, "\t-t <dir>   Directory to find default traces.\n");
-    fprintf(stderr, "\t-v         Print per-trace performance breakdowns.\n");
-    fprintf(stderr, "\t-V         Print additional debug info.\n");
 }

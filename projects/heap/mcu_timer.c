@@ -1,9 +1,10 @@
 /*
  * Modified from Furkan Cayci's STM32F407 timer.c example
  */
-
 #include "mcu_timer.h"
 #include "memlib.h"
+
+#define MAXLINE 1024
 
 static size_t systime = 0;
 
@@ -17,6 +18,8 @@ void TIM2_IRQHandler(void)
 
 	// Stall if stack is overflowing to heap
 	if (mem_heap_hi() > (void *)(stack_top)) {
+		sprintf(msg, "Stack overflow detected");
+		var_print(msg);
 		loop();
 	}
 
@@ -30,7 +33,7 @@ void TIM2_IRQHandler(void)
 
 // Returns system time in ms
 size_t get_time(void) {
-	return systime*10 + (TIM2->CNT/10);
+	return systime;
 }
 
 /*************************************************
@@ -53,8 +56,8 @@ void timer_init(void)
 	// For STM32F411: 100M/4*2 = 50M, 50M/4999+1 = 10 khz clock speed
     TIM2->PSC = 4999;
 
-	// Set auto reload value to 100 to give 10 ms timer interrupts
-    TIM2->ARR = 100;
+	// Set auto reload value to 100 to give 1 ms timer interrupts
+    TIM2->ARR = 10;
 
     // Update Interrupt Enable
     TIM2->DIER |= (1 << 0);

@@ -1,10 +1,10 @@
 Original README in CSAPP-README file
 
 Run basic tests:
-./run.sh
+./short_test.sh
 
 Run all trace tests:
-./all_tests.sh
+./run.sh
 
 Check if trace file is valid:
 python tracechecker.py $(path to file)
