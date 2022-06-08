@@ -236,7 +236,7 @@ int main(void)
 	p1_int = p1*100;
 	p2_int = (int)p2;
 
-	sprintf(msg, "Utilization: %d%%. Throuput: %d\n",
+	sprintf(msg, "Utilization: %d%%. Throughput: %d\n",
 	       p1_int, 
 	       p2_int);
 	
@@ -574,6 +574,8 @@ static int eval_mm_valid(trace_t *trace, int tracenum, range_t **ranges)
 	    break;
 
 	default:
+		sprintf(msg, "Type %d", trace->ops[i].type);
+		var_print(msg);
 	    app_error("Nonexistent request type in eval_mm_valid");
         }
 
@@ -817,5 +819,6 @@ void malloc_error(int tracenum, int opnum, char *err_msg)
 {
     errors++;
     sprintf(msg, "ERROR [trace %d, line %d]: %s\n", tracenum, LINENUM(opnum), err_msg);
+	var_print(msg);
 	loop();
 }

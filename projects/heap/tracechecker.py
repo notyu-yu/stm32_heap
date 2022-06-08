@@ -1,3 +1,5 @@
+# Takes file name as argument, checks if operations in trace file are valid
+
 import sys
 
 file = sys.argv[1].strip()
