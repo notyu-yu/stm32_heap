@@ -4,7 +4,7 @@ run.sh in this directory will run tests on all trace files and display utilizati
 
 Code overview:
 mm.c: Original implemetation of CSAPP malloc lab, provide malloc related functions.
-mcu.c: Provides loop function for infinite stall and gdb breakpoints.
+mcu.c: Provides loop and var_print function for gdb output.
 mcu_timer.c: Provides timing functions and check for stack overflow.
 mcu_mdriver.c: Read trace files loaded into teststring.h and runs the same test as the orignial malloc lab.
 mcu_mlib.c: Provides sbrk related functions.
