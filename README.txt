@@ -13,3 +13,4 @@ Helper scripts:
 rep_to_hdr.py: Converts a .rep trace file to teststring.h.
 tracechecker.py: Checks if trace files are valid.
 extract_output.py: Extract the program output string from gdb_out.txt when gdb is ran with -x gdbtrace.txt.
+trace_gen.py: Randomly generate trace files for testing.

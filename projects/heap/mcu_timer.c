@@ -41,14 +41,8 @@ size_t get_time(void) {
 *************************************************/
 void timer_init(void)
 {
-    /* set system clock to 168 Mhz */
+    /* set system clock to 100 Mhz */
     set_sysclk_to_100();
-
-    // setup LEDs
-    // RCC->AHB1ENR |= (1 << 3);
-    // GPIOD->MODER &= 0x00FFFFFF;
-    // GPIOD->MODER |= 0x55000000;
-    // GPIOD->ODR = 0;
 
     // enable TIM2 clock (bit0)
     RCC->APB1ENR |= (1 << 0);
